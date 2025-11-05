@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Conor Hébert Portfolio</title>
+  <style>
+      body {
+        font-family: Verdana, sans-serif;
+        margin: 0;
+        background: #fff;
+        color: #222;
+      }
+      .main-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-auto-rows: minmax(120px, auto);
+        gap: 20px;
+        min-height: 100vh;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      .intro {
+        grid-column: 1 / 2;
+        align-self: start;
+        max-width: 100%;
+        font-size: 11px;
+        position: sticky;
+        top: 20px;
+      }
+      .contact-info {
+        position: static;
+        width: 100%;
+      }
+      .intro h2 {
+        font-size: 25px;
+        font-weight: normal;
+        margin-bottom: 0.5em;
+        margin-top: 0;
+      }
+      .media {
+        grid-column: 2 / 5;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px 4%;
+        align-items: start;
+      }
+      .media-item {
+        width: 100%;
+        height: auto;
+        display: block;
+        cursor: pointer;
+        margin: 0 auto;
+      }
+      .media-item.video-preview {
+        object-fit: cover;
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .enlarged {
+        grid-column: 5 / 7;
+        align-self: start;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 300px;
+        gap: 16px;
+        position: sticky;
+        top: 20px;
+        z-index: 2;
+      }
+      #enlarged-description {
+        align-self: flex-start;
+        text-align: left;
+        width: 100%;
+        font-size: 13px;
+        max-width: 220px;
+      }
+      @media (max-width: 100%) {
+        .main-grid {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+        .intro { grid-column: 1 / 2; }
+        .media { grid-column: 2 / 4; }
+        .enlarged { grid-column: 1 / 4; }
+      }
+
+  </style>
+</head>
+<body>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@mux/mux-player@latest"></script>
+
+  <div class="main-grid">
+    <div class="intro">
+      <h2>Conor Hébert</h2>
+      <p>
+        A filmmaker and graphic designer based in Manhattan.
+        Who has an AAS degree in Communication Design and will
+        receive a BFA in Graphic Design in May of 2026.
+      </p>
+      <p class="contact-info">
+        <span style="opacity:0.5;">Contact at</span> conorhhebert@gmail.com
+      </p>
+    </div>
+
+    <div class="media">
+      <!-- Grid thumbnails with data-enlarge-src for enlarged video -->
+      <video class="media-item video-preview" 
+             src="media/light_test_tl.mp4" autoplay muted loop 
+             data-description="Light experiment, 2025" 
+             data-enlarge-src="https://stream.mux.com/901hxnE01GgFzm7VY2q5APzmyOMkuTtPfWggwgKetOAww.m3u8">
+      </video>   
+      <video class="media-item video-preview" 
+             src="media/Benny_1_tl.mp4" autoplay muted loop 
+             data-description="Benny Trokan music video, 2024" 
+             data-enlarge-src="https://stream.mux.com/2jIwuTCbKR45Vwx3Ea01VCJErp9400SC00ze02KW7IAb58w.m3u8">
+      </video>
+           <video class="media-item video-preview" 
+             src="media/lot_detective_TL.mp4" autoplay muted loop 
+             data-description="Lot Detective, 2025" 
+             data-enlarge-src="https://stream.mux.com/3VDwIKao2tTQYucgIL1zi01w5kuKp6KOFXLNyTpA01T0200.m3u8">
+      </video>
+      <video class="media-item video-preview" 
+             src="media/SF tl.mp4" autoplay muted loop 
+             data-description="San Francisco trip, 2025" 
+             data-enlarge-src="https://stream.mux.com/dyp3PHwIgeXacu8RBkvoo1PVy6ZtKAw87CgQIMXtA02w.m3u8">
+      </video>
+      <video class="media-item video-preview" 
+             src="media/lure _lighter_tl.mp4" autoplay muted loop 
+             data-description="Lure lighter, 2025" 
+             data-enlarge-src="https://stream.mux.com/L01QvKeDKQEZqlEmhy028pKeGEAHmslKPfrS58O4F3L2k.m3u8">
+      </video>
+      <video class="media-item video-preview" 
+             src="media/please_dont_tl.mp4" autoplay muted loop 
+             data-description="Three world trade, 2024" 
+             data-enlarge-src="https://stream.mux.com/KUFVhPf12Qi9S8576LIbDe02gGUDtzc81uJXHLILIn0100.m3u8">
+      </video>
+
+<video class="media-item video-preview" 
+             src="media/Home_Products_tl.mp4" autoplay muted loop 
+             data-description="Lot Detective, 2025" 
+             data-enlarge-src="https://stream.mux.com/Xb2dppWKiddMOfCEtz5MjrGdq3JDSQeUtx102B029O59s.m3u8">
+      </video>
+<video class="media-item video-preview" 
+             src="media/Fishtank_tl.mp4" autoplay muted loop 
+             data-description="Lot Detective, 2025" 
+             data-enlarge-src="https://stream.mux.com/HDZOiGtiK00u2T47i4sYfm3SKAZSeHHFeRvmNYrvBXMY.m3u8">
+      </video>
+<video class="media-item video-preview" 
+             src="media/Body_heat_titles_tl.mp4" autoplay muted loop 
+             data-description="Lot Detective, 2025" 
+             data-enlarge-src="https://stream.mux.com/DGbLqtWrZAtL01VPEBwmI8WNsK3oOGSuCbd48A933qlg.m3u8">
+      </video>
+<video class="media-item video-preview" 
+             src="media/Hébert_Motion_tl.mp4" autoplay muted loop 
+             data-description="Lot Detective, 2025" 
+             data-enlarge-src="https://stream.mux.com/5dKEhALK01p00mG300C2gkmxMw3LYD6Kw3kh025WIMSzgZc.m3u8">
+      </video>
+
+
+      
+    </div>
+
+    <div class="enlarged">
+      <div id="enlarged-media-container" style="width:100%;display:flex;flex-direction:column;align-items:center;">
+        <!-- Enlarged media will appear here -->
+      </div>
+      <div id="enlarged-description"></div>
+    </div>
+  </div>
+<script>
+const mediaItems = document.querySelectorAll('.media-item');
+const enlargedContainer = document.getElementById('enlarged-media-container');
+const enlargedDesc = document.getElementById('enlarged-description');
+
+let locked = false;
+let lockedItem = null;
+
+// Hover preview (local loop)
+function showEnlarged(item) {
+  enlargedContainer.innerHTML = `
+    <video autoplay muted loop style="max-width:100%;max-height:60vh;object-fit:contain;background:#000;">
+      <source src="${item.currentSrc || item.src}" type="video/mp4">
+    </video>`;
+  enlargedDesc.textContent = item.getAttribute('data-description') || '';
+}
+
+function clearEnlarged() {
+  enlargedContainer.innerHTML = '';
+  enlargedDesc.textContent = '';
+}
+
+// Use Mux web component instead of iframe
+function showMuxPlayer(item) {
+  const enlargeSrc = item.getAttribute('data-enlarge-src');
+  if (!enlargeSrc) return;
+
+  // Try to extract Mux playback ID from the URL
+  let playbackId = null;
+  const match = enlargeSrc.match(/player\.mux\.com\/([a-zA-Z0-9]+)/);
+  if (match) playbackId = match[1];
+
+  enlargedContainer.innerHTML = '';
+
+  if (playbackId) {
+    // Mux-hosted video
+    const muxPlayer = document.createElement('mux-player');
+    muxPlayer.setAttribute('stream-type', 'on-demand');
+    muxPlayer.setAttribute('playback-id', playbackId);
+    muxPlayer.setAttribute('metadata-video-title', item.getAttribute('data-description') || '');
+    muxPlayer.setAttribute('playsinline', '');
+    muxPlayer.setAttribute('style', 'width:100%;max-height:60vh;object-fit:contain;');
+muxPlayer.setAttribute('playsinline', '');
+muxPlayer.setAttribute('controls', '');
+muxPlayer.setAttribute('preload', 'metadata');
+
+    muxPlayer.style.width = '100%';
+    muxPlayer.style.maxWidth = '100%';
+    muxPlayer.style.setProperty('--media-object-fit', 'contain');
+    muxPlayer.style.background = 'black';
+    muxPlayer.style.borderRadius = '12px';
+    enlargedContainer.appendChild(muxPlayer);
+  } else {
+    // Local or non-Mux video fallback
+    enlargedContainer.innerHTML = `
+      <video controls style="max-width:100%;max-height:60vh;object-fit:contain;background:#000;">
+        <source src="${enlargeSrc}" type="video/mp4">
+      </video>`;
+  }
+
+  enlargedDesc.textContent = item.getAttribute('data-description') || '';
+}
+
+// Hover and click logic
+mediaItems.forEach(item => {
+  item.addEventListener('mouseenter', () => {
+    if (!locked) showEnlarged(item);
+  });
+
+  item.addEventListener('mouseleave', () => {
+    if (!locked) clearEnlarged();
+  });
+
+  item.addEventListener('click', () => {
+    if (locked && lockedItem === item) {
+      locked = false;
+      lockedItem = null;
+      clearEnlarged();
+      return;
+    }
+
+    locked = true;
+    lockedItem = item;
+    showMuxPlayer(item);
+  });
+});
+</script>
+</body>
+</html>
