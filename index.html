@@ -77,15 +77,15 @@
         font-size: 13px;
         max-width: 220px;
       }
-      @media (max-width: 768px) {
+   @media (max-width: 768px) {
   .main-grid {
-    grid-template-columns: 1fr;  /* one column */
+    grid-template-columns: 1fr;  
     gap: 16px;
     padding: 12px;
   }
 
   .intro, .media, .enlarged {
-    grid-column: 1 / -1;  /* each takes full width */
+    grid-column: 1 / -1;
     position: static;
   }
 
@@ -95,8 +95,14 @@
 
   .media {
     display: grid;
-    grid-template-columns: 1fr 1fr;  /* two thumbnails per row */
-    gap: 12px;
+    grid-template-columns: repeat(5, 1fr); /* four columns */
+    gap: 8px;
+  }
+
+  .media-item {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
   }
 
   .enlarged {
@@ -105,11 +111,9 @@
 
   #enlarged-media-container video,
   mux-player {
-    max-height: 50vh;  /* smaller video on phones */
+    max-height: 50vh;
   }
 }
-
-
   </style>
 </head>
 <body>
