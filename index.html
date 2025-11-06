@@ -327,9 +327,17 @@ mediaItems.forEach(item => {
 
 document.getElementById('contact-toggle').addEventListener('click', function(e) {
   e.preventDefault();
-  document.body.classList.toggle('active-bg');
-});
 
+  // Generate a random color
+  const randomColor = `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`;
+
+  // If background is already colored, clear it; otherwise, set new random color
+  if (document.body.style.backgroundColor) {
+    document.body.style.backgroundColor = '';
+  } else {
+    document.body.style.backgroundColor = randomColor;
+  };
+});
 </script>
 </body>
 </html>
