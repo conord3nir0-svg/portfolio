@@ -193,7 +193,12 @@
              data-description="The Dare and Fiona Persona, 2023" 
              data-enlarge-src="https://stream.mux.com/2J6eVwu3f8TZch02wQ01IlOaipH78nODhR00O00M21Xycr00.m3u8">
       </video>
-      
+ <img 
+  class="media-item" 
+  src="assets/pg 2 3.jpg" 
+  data-description="Book page, 2025" 
+  data-enlarge-src="assets/pg 2 3.jpg"
+  >
     </div>
 
     <div class="enlarged">
@@ -224,7 +229,13 @@ function clearEnlarged() {
   enlargedContainer.innerHTML = '';
   enlargedDesc.textContent = '';
 }
-
+function showImage(item) {
+  const enlargeSrc = item.getAttribute('data-enlarge-src') || item.src;
+  enlargedContainer.innerHTML = `
+    <img src="${enlargeSrc}" style="max-width:100%;max-height:60vh;object-fit:contain;background:#000;">
+  `;
+  enlargedDesc.textContent = item.getAttribute('data-description') || '';
+}
 // Use Mux web component instead of iframe
 function showMuxPlayer(item) {
   const enlargeSrc = item.getAttribute('data-enlarge-src');
@@ -286,7 +297,11 @@ mediaItems.forEach(item => {
 
     locked = true;
     lockedItem = item;
-    showMuxPlayer(item);
+    if (item.tagName === 'IMG') {
+  showImage(item);
+} else {
+  showMuxPlayer(item);
+}
   });
 });
 </script>
