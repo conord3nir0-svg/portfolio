@@ -121,34 +121,51 @@
 body.active-bg {
   background: rgb(255, 247, 0); /* choose any color */
 }
-.pdf-wrapper {
-  width: 100%;
+.book-viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   max-width: 800px;
-  height: 80vh;
-  margin: 0 auto;
+  width: 100%;
+}
+
+.book-page {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.book-controls {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  gap: 16px;
+  color: #222;
+  font-family: verdana, sans-serif;
+  font-size: 11px;
 }
 
-.pdf-wrapper iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  transform-origin: top left;
+.book-controls button {
+  background: none;
+  border: #222;
+  color: #222;
+  cursor: pointer;
 }
 
-/* Mobile scaling fix */
+.book-controls button:hover:not(:disabled) {
+  background: #222;
+}
+
+.book-controls button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
 @media (max-width: 768px) {
-  .pdf-wrapper {
-    width: 100%;
-    height: 70vh;
-  }
-
-  .pdf-wrapper iframe {
-    transform: scale(1);
-  }
+  .book-viewer { max-width: 100%; }
+  .book-controls { font-size: 12px; gap: 12px; }
 }
   </style>
 </head>
@@ -196,17 +213,18 @@ body.active-bg {
              data-description="San Francisco, 2025" 
              data-enlarge-src="https://stream.mux.com/dyp3PHwIgeXacu8RBkvoo1PVy6ZtKAw87CgQIMXtA02w.m3u8">
       </video>
-      <img 
+     <img 
   class="media-item"
-  src="assets/1955_2023_cover.png" 
+  src="assets/1955_2023_cover.png"
   data-description="'1955 2023' selected spreads, 2025"
-  data-enlarge-src="assets/1955_2023.pdf#toolbar=0&navpanes=0&scrollbar=0"
-  data-type="pdf">
-       <video class="media-item video-preview" 
+  data-type="book"
+  data-pages="assets/BookTwo04.jpg,assets/BookTwo05.jpg,assets/BookTwo06.jpg,assets/BookTwo07.jpg,assets/BookTwo08.jpg,assets/BookTwo08.jpg,assets/BookTwo09.jpg,assets/BookTwo10.jpg">
+
+  <video class="media-item video-preview" 
              src="assets/Pedmis.mp4" autoplay muted loop playsinline
              data-description="Pedestrian Misbehavior, 2025" 
              data-enlarge-src="https://stream.mux.com/FHcWooSUzwZQDwqYDTMw8ZF7Pt3SdXk1qv9ASVStRMc.m3u8">
-      </video>
+  </video>
       <img 
   class="media-item" 
   src="assets/pg 2 3.jpg" 
@@ -373,28 +391,31 @@ mediaItems.forEach(item => {
   item.addEventListener('mouseleave', () => {
     if (!locked) clearEnlarged();
   });
+item.addEventListener('click', () => {
+  if (locked && lockedItem === item) {
+    locked = false;
+    lockedItem = null;
+    clearEnlarged();
+    return;
+  }
 
-  // Click behavior
-  item.addEventListener('click', () => {
-    if (locked && lockedItem === item) {
-      locked = false;
-      lockedItem = null;
-      clearEnlarged();
-      return;
-    }
+  locked = true;
+  lockedItem = item;
 
-    locked = true;
-    lockedItem = item;
+  const type = item.getAttribute('data-type');
+  const enlargeSrc = item.getAttribute('data-enlarge-src');
 
-    if (item.dataset.type === 'pdf') {
-      // Only load the PDF when clicked
-      showPDF(item);
-    } else if (item.tagName === 'IMG') {
-      showImage(item);
-    } else {
-      showMuxPlayer(item);
-    }
-  });
+  if (type === 'book') {
+    showBookPages(item);
+  } else if (item.tagName === 'IMG' && enlargeSrc) {
+    showImage(item);
+  } else if (item.tagName === 'VIDEO' || enlargeSrc?.includes('mux')) {
+    showMuxPlayer(item);
+  } else {
+    showImage(item); // fallback
+  }
+});
+
 });
 
 
@@ -411,19 +432,41 @@ document.getElementById('contact-toggle').addEventListener('click', function(e) 
     document.body.style.backgroundColor = randomColor;
   };
 });
-function showPDF(item) {
-  const pdfSrc = item.getAttribute('data-enlarge-src');
-  enlargedContainer.innerHTML = `
-    <iframe 
-      src="${pdfSrc}" 
-      style="width:100%;height:50vh;border:none;"
-      title="PDF Viewer">
-    </iframe>
-    <p style="font-size:11px;margin-top:8px;text-align: left;">
-      <a href="${pdfSrc}" target="_blank" style="opacity:1;">Open large</a>
-    </p>
-  `;
-  enlargedDesc.textContent = item.getAttribute('data-description') || '';
+function showBookPages(item) {
+  const pages = item.getAttribute('data-pages');
+  if (!pages) return;
+
+  const imageUrls = pages.split(',').map(u => u.trim());
+  let currentPage = 0;
+
+  function renderPage() {
+    enlargedContainer.innerHTML = `
+      <div class="book-viewer">
+        <img src="${imageUrls[currentPage]}" class="book-page">
+        <div class="book-controls">
+          <button id="prevPage" ${currentPage === 0 ? 'disabled' : ''}>&larr;</button>
+          <span>${currentPage + 1} / ${imageUrls.length}</span>
+          <button id="nextPage" ${currentPage === imageUrls.length - 1 ? 'disabled' : ''}>&rarr;</button>
+        </div>
+      </div>
+    `;
+    enlargedDesc.textContent = item.getAttribute('data-description') || '';
+
+    document.getElementById('prevPage')?.addEventListener('click', () => {
+      if (currentPage > 0) {
+        currentPage--;
+        renderPage();
+      }
+    });
+    document.getElementById('nextPage')?.addEventListener('click', () => {
+      if (currentPage < imageUrls.length - 1) {
+        currentPage++;
+        renderPage();
+      }
+    });
+  }
+
+  renderPage();
 }
 </script>
 </body>
