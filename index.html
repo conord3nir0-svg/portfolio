@@ -438,34 +438,51 @@ function showBookPages(item) {
   const imageUrls = pages.split(',').map(u => u.trim());
   let currentPage = 0;
 
-  function renderPage() {
-    enlargedContainer.innerHTML = `
-      <div class="book-viewer">
-        <img src="${imageUrls[currentPage]}" class="book-page">
-        <div class="book-controls">
-          <button id="prevPage" ${currentPage === 0 ? 'disabled' : ''}>&larr;</button>
-          <span>${currentPage + 1} / ${imageUrls.length}</span>
-          <button id="nextPage" ${currentPage === imageUrls.length - 1 ? 'disabled' : ''}>&rarr;</button>
-        </div>
-      </div>
-    `;
-enlargedDesc.innerHTML = item.getAttribute('data-description') || '';
+  // Preload all images to avoid flicker
+  imageUrls.forEach(url => {
+    const img = new Image();
+    img.src = url;
+  });
 
-    document.getElementById('prevPage')?.addEventListener('click', () => {
-      if (currentPage > 0) {
-        currentPage--;
-        renderPage();
-      }
-    });
-    document.getElementById('nextPage')?.addEventListener('click', () => {
-      if (currentPage < imageUrls.length - 1) {
-        currentPage++;
-        renderPage();
-      }
-    });
+  // Build viewer once
+  enlargedContainer.innerHTML = `
+    <div class="book-viewer">
+      <img id="bookPage" src="${imageUrls[0]}" class="book-page">
+      <div class="book-controls">
+        <button id="prevPage" disabled>&larr;</button>
+        <span id="pageCounter">1 / ${imageUrls.length}</span>
+        <button id="nextPage">&rarr;</button>
+      </div>
+    </div>
+  `;
+  enlargedDesc.innerHTML = item.getAttribute('data-description') || '';
+
+  const pageImg = document.getElementById('bookPage');
+  const prevBtn = document.getElementById('prevPage');
+  const nextBtn = document.getElementById('nextPage');
+  const pageCounter = document.getElementById('pageCounter');
+
+  function updatePage(newIndex) {
+    if (newIndex < 0 || newIndex >= imageUrls.length) return;
+
+    currentPage = newIndex;
+    pageImg.src = imageUrls[currentPage];
+    prevBtn.disabled = currentPage === 0;
+    nextBtn.disabled = currentPage === imageUrls.length - 1;
+    pageCounter.textContent = `${currentPage + 1} / ${imageUrls.length}`;
   }
 
-  renderPage();
+  prevBtn.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    updatePage(currentPage - 1);
+  });
+
+  nextBtn.addEventListener('click', e => {
+    e.preventDefault();
+    e.stopPropagation();
+    updatePage(currentPage + 1);
+  });
 }
 </script>
 </body>
