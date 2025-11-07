@@ -167,6 +167,12 @@ body.active-bg {
              data-description="San Francisco, 2025" 
              data-enlarge-src="https://stream.mux.com/dyp3PHwIgeXacu8RBkvoo1PVy6ZtKAw87CgQIMXtA02w.m3u8">
       </video>
+      <img 
+  class="media-item"
+  src="assets/1955_2023_cover.png" 
+  data-description="'1955 2023' selected spreads, 2025"
+  data-enlarge-src="assets/1955_2023.pdf#toolbar=0&navpanes=0&scrollbar=0"
+  data-type="pdf">
        <video class="media-item video-preview" 
              src="assets/Pedmis.mp4" autoplay muted loop playsinline
              data-description="Pedestrian Misbehavior, 2025" 
@@ -219,16 +225,19 @@ body.active-bg {
              data-description="Happy Fun, 2023" 
              data-enlarge-src="https://stream.mux.com/nSeXfw8IMiRGVQSjBk2sQbLgTaRgOKUM9iS7QigudwM.m3u8">
       </video>
+         <img 
+  class="media-item" 
+  src="assets/3_tickets.jpg" 
+  data-description="Three Train Tickets, 2024" 
+  data-enlarge-src="assets/3_tickets.jpg"> 
        <img 
   class="media-item" 
   src="assets/Junior_Show_Poster.jpg" 
   data-description="Junior Graphic Design Show, 2024" 
   data-enlarge-src="assets/Junior_Show_Poster.jpg">
-   <img 
-  class="media-item" 
-  src="assets/3_tickets.jpg" 
-  data-description="Three Train Tickets, 2024" 
-  data-enlarge-src="assets/3_tickets.jpg"> 
+
+  
+  
     </div>
     <div class="enlarged">
       <div id="enlarged-media-container" style="width:100%;display:flex;flex-direction:column;align-items:center;">
@@ -259,10 +268,28 @@ function clearEnlarged() {
   enlargedDesc.textContent = '';
 }
 function showImage(item) {
-  const enlargeSrc = item.getAttribute('data-enlarge-src') || item.src;
+  const imgSrc = item.getAttribute('src');
   enlargedContainer.innerHTML = `
-    <img src="${enlargeSrc}" 
-         style="width:100%;height:auto;display:block;object-fit:cover;">
+    <img src="${imgSrc}" 
+         style="max-width:100%;height:auto;display:block;object-fit:contain;">
+  `;
+  enlargedDesc.textContent = item.getAttribute('data-description') || '';
+}
+
+function showPDF(item) {
+  const pdfSrc = item.getAttribute('data-enlarge-src');
+  enlargedContainer.innerHTML = `
+    <iframe 
+      src="${pdfSrc}#toolbar=0&navpanes=0"
+      style="
+        width:80%;
+        height:70vh;
+        border:none;
+        border-radius:12px;
+        box-shadow:0 0 20px rgba(0,0,0,0.2);
+      "
+      title="PDF Viewer">
+    </iframe>
   `;
   enlargedDesc.textContent = item.getAttribute('data-description') || '';
 }
@@ -307,16 +334,23 @@ muxPlayer.setAttribute('preload', 'metadata');
   enlargedDesc.textContent = item.getAttribute('data-description') || '';
 }
 
-// Hover and click logic
 mediaItems.forEach(item => {
+  // Hover behavior
   item.addEventListener('mouseenter', () => {
-    if (!locked) showEnlarged(item);
+    if (locked) return;
+    if (item.tagName === 'VIDEO') {
+      showEnlarged(item);
+    } else if (item.tagName === 'IMG') {
+      // Only show the image preview on hover
+      showImage(item);
+    }
   });
 
   item.addEventListener('mouseleave', () => {
     if (!locked) clearEnlarged();
   });
 
+  // Click behavior
   item.addEventListener('click', () => {
     if (locked && lockedItem === item) {
       locked = false;
@@ -327,13 +361,18 @@ mediaItems.forEach(item => {
 
     locked = true;
     lockedItem = item;
-    if (item.tagName === 'IMG') {
-  showImage(item);
-} else {
-  showMuxPlayer(item);
-}
+
+    if (item.dataset.type === 'pdf') {
+      // Only load the PDF when clicked
+      showPDF(item);
+    } else if (item.tagName === 'IMG') {
+      showImage(item);
+    } else {
+      showMuxPlayer(item);
+    }
   });
 });
+
 
 document.getElementById('contact-toggle').addEventListener('click', function(e) {
   e.preventDefault();
@@ -348,6 +387,20 @@ document.getElementById('contact-toggle').addEventListener('click', function(e) 
     document.body.style.backgroundColor = randomColor;
   };
 });
+function showPDF(item) {
+  const pdfSrc = item.getAttribute('data-enlarge-src');
+  enlargedContainer.innerHTML = `
+    <iframe 
+      src="${pdfSrc}" 
+      style="width:100%;height:50vh;border:none;"
+      title="PDF Viewer">
+    </iframe>
+    <p style="font-size:11px;margin-top:8px;text-align: left;">
+      <a href="${pdfSrc}" target="_blank" style="opacity:1;">Open large</a>
+    </p>
+  `;
+  enlargedDesc.textContent = item.getAttribute('data-description') || '';
+}
 </script>
 </body>
 </html>
