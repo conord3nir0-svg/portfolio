@@ -121,6 +121,35 @@
 body.active-bg {
   background: rgb(255, 247, 0); /* choose any color */
 }
+.pdf-wrapper {
+  width: 100%;
+  max-width: 800px;
+  height: 80vh;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.pdf-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  transform-origin: top left;
+}
+
+/* Mobile scaling fix */
+@media (max-width: 768px) {
+  .pdf-wrapper {
+    width: 100%;
+    height: 70vh;
+  }
+
+  .pdf-wrapper iframe {
+    transform: scale(1);
+  }
+}
   </style>
 </head>
 <body>
@@ -279,17 +308,12 @@ function showImage(item) {
 function showPDF(item) {
   const pdfSrc = item.getAttribute('data-enlarge-src');
   enlargedContainer.innerHTML = `
-    <iframe 
-      src="${pdfSrc}#toolbar=0&navpanes=0"
-      style="
-        width:80%;
-        height:70vh;
-        border:none;
-        border-radius:12px;
-        box-shadow:0 0 20px rgba(0,0,0,0.2);
-      "
-      title="PDF Viewer">
-    </iframe>
+    <div class="pdf-wrapper">
+      <iframe 
+        src="${pdfSrc}#toolbar=0&navpanes=0&view=fitH"
+        title="PDF Viewer">
+      </iframe>
+    </div>
   `;
   enlargedDesc.textContent = item.getAttribute('data-description') || '';
 }
