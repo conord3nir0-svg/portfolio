@@ -169,6 +169,20 @@ body.active-bg {
   .book-viewer { max-width: 100%; }
   .book-controls { font-size: 12px; gap: 12px; }
 }
+.media-item {
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: pointer;
+  margin: 0 auto;
+
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.media-item.loaded {
+  opacity: 1;
+}
   </style>
 </head>
 <body>
@@ -384,6 +398,18 @@ function showPDF(item) {
   `;
 enlargedDesc.innerHTML = item.getAttribute('data-description') || '';
 }
+mediaItems.forEach(item => {
+  if (item.tagName === 'IMG') {
+    item.onload = () => item.classList.add('loaded');
+  }
+
+  if (item.tagName === 'VIDEO') {
+    item.addEventListener('loadeddata', () => {
+      item.classList.add('loaded');
+    });
+  }
+}); 
+
 // Use Mux web component instead of iframe
 function showMuxPlayer(item) {
   const enlargeSrc = item.getAttribute('data-enlarge-src');
